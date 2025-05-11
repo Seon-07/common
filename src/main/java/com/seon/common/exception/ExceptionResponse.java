@@ -1,6 +1,8 @@
 package com.seon.common.exception;
 
+import com.seon.common.response.ApiResponse;
 import lombok.Getter;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDateTime;
 
@@ -15,14 +17,14 @@ public class ExceptionResponse {
     private final String message;
     private final LocalDateTime timestamp;
 
-    public ExceptionResponse(ExceptionCode exceptionCode) {
-        this.status = exceptionCode.getStatus();
-        this.message = exceptionCode.getMessage();
+    public ExceptionResponse(ApiException e) {
+        this.status = e.getExceptionCode().getStatus();
+        this.message = e.getMessage();
         this.timestamp = LocalDateTime.now();
     }
 
-    public ExceptionResponse(ExceptionCode exceptionCode, String message) {
-        this.status = exceptionCode.getStatus();
+    public ExceptionResponse(MethodArgumentNotValidException e, String message) {
+        this.status = e.getStatusCode().value();
         this.message = message;
         this.timestamp = LocalDateTime.now();
     }

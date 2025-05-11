@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ExceptionResponse> handleApiException(ApiException e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getExceptionCode());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e);
         return ResponseEntity.status(HttpStatus.valueOf(e.getExceptionCode().getStatus())).body(exceptionResponse);
     }
 
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
-        ExceptionResponse response = new ExceptionResponse(ExceptionCode.VALIDATION_ERROR, errorMessage);
+        ExceptionResponse response = new ExceptionResponse(e, errorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
